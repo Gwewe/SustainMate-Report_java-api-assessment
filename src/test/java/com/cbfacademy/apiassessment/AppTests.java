@@ -13,8 +13,8 @@ import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = App.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AppTests {
+@SpringBootTest(classes = ReportSearchRestApiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class ReportSearchRestApiApplicationTests {
 
 	@LocalServerPort
 	private int port;
