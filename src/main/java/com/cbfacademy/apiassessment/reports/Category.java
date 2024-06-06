@@ -1,5 +1,7 @@
 package com.cbfacademy.apiassessment.reports;
 
+/*  Enumeration Category file that contained 
+    predefined constants with displayName fields for more human readable*/
 public enum Category {
     REGULATIONS("Uk Sustainability Regulations"),
     CORPORATE_INITIATIVES("UK Corporate Sustainability Initiatives"),
