@@ -36,7 +36,25 @@ public interface ReportService {
      */
     Report createReport(Report report);
 
-    List<Report> searchByCategory(Category category);
+    /**
+     * Update the existing Report by its ID.
+     *
+     * @param id         The ID of the Report to update.
+     * @param updatedReport The updated Report object.
+     * @return The updated Report, or null if the ID is not found.
+     */
+    Report updateReport(Long id, Report updatedReport);
+
+    /**
+     * Delete The Report by its ID.
+     *
+     * @param id The ID of the report to delete.
+     */
+    void deleteReport(Long id);
+
+
+
+    //List<Report> searchByCategory(Category category);
 
 
 }
