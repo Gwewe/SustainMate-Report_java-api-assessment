@@ -23,12 +23,15 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- The Spring Data JPA dependency -->
+        <!-- The Spring Data JPA and Jakarta dependency -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
         <!-- The Spring Boot Security Starter dependency -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
