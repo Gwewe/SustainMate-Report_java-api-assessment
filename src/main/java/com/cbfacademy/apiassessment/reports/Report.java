@@ -12,10 +12,11 @@ public class Report {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
     private String url;
     private String description;
-    private String category;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
@@ -24,8 +25,7 @@ public class Report {
     public Report() {}
 
     //Constructor with the other fields
-    public Report( String title, String url, String description, String category, LocalDateTime dateCreated, LocalDateTime dateUpdated) {
-        this.title = title;
+    public Report( String url, String description, Category category, LocalDateTime dateCreated, LocalDateTime dateUpdated) {
         this.url = url;
         this.description = description;
         this.category = category;
@@ -38,10 +38,6 @@ public class Report {
     public Long getId() {
         return id;
     }
-
-    public String getTitle(){
-        return title;
-    }
     
     public String getUrl(){
         return url;
@@ -51,7 +47,7 @@ public class Report {
         return description;
     }
     
-    public String getCategory(){
+    public Category getCategory(){
         return category;
     }
 
@@ -65,10 +61,6 @@ public class Report {
     
 
     // All the Setters
-    public void setTitle (String title){
-        this.title = title;
-    }
-
     public void setUrl(String url){
         this.url = url;
     }
@@ -77,7 +69,7 @@ public class Report {
         this.description = description;
     }
 
-    public void setCategory(String category){
+    public void setCategory(Category category){
         this.category = category;
     }
 
