@@ -19,25 +19,41 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> getAllsReports() {
         try {
             if (reports == null || reports.isEmpty()) {
-                throw new NoSuchElementException("The reports list was not found.");
+                throw new NoSuchElementException("The reports list is empty or null.");
+            } else {
+                return new ArrayList<>(reports);
             }
-            return new ArrayList<>(reports);
         } catch (RuntimeException e){
             System.err.println("An error occured while retrieving all the reports " + e.getMessage());
             e.printStackTrace();
             return null;
-
         }
-            
-
-        
     }
 
+    @Override
+    public Optional <Report> findReportById (Long id){
+        try {
+            if (id == null || id <= 0){
+                throw new IllegalArgumentException(id + ": The id of the report is null or incorrect.");
+            } else {
+                return reportRepository.findById(id);
+            }
+        } catch (Exception e) {
+            System.err.println("An error occured while retrieving the report by its id " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    public Report getReportById (Long id){}
+    @Override
+    public Report getAllReportByCategory (Category category) {
+        List<Report> resultByCategory = new ArrayList<>();
+        try{
+            
 
-
-    public Report getAllReportByCategory (Category category)throws EnumConstantNotPresentException{}
+            throw new EnumConstantNotPresentException(null, null);
+        }
+    }
 
 
     public Report createReport(Report report){}

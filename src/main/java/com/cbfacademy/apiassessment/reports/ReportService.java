@@ -1,6 +1,7 @@
 package com.cbfacademy.apiassessment.reports;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReportService {
 
@@ -18,7 +19,7 @@ public interface ReportService {
      * @param id The ID of the Report to retrieve.
      * @return The Report with the specified ID, or null if not found.
      */
-    Report getReportById (Long id);
+    Optional <Report> findReportById (Long id);
 
     /**
      * Retrieve all Reports by its category.
