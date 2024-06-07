@@ -1,19 +1,21 @@
 package com.cbfacademy.apiassessment.reports;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final List<Report> reports = new ArrayList<>();
-    private ReportRepository reportRepository;
+    private final ReportRepository reportRepository;
+
+    @Autowired
+    public ReportServiceImpl(ReportRepository reportRepository){
+        this.reportRepository = reportRepository;
+    }
 
     @Override
     public List<Report> getAllsReports() {
@@ -21,12 +23,11 @@ public class ReportServiceImpl implements ReportService {
             if (reports == null || reports.isEmpty()) {
                 throw new NoSuchElementException("The reports list is empty or null.");
             } else {
-                return new ArrayList<>(reports);
+                return reports;
             }
         } catch (RuntimeException e){
-            System.err.println("An error occured while retrieving all the reports " + e.getMessage());
-            e.printStackTrace();
-            return null;
+            System.err.println("An error occured while retrieving all the reports, " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 
@@ -38,27 +39,56 @@ public class ReportServiceImpl implements ReportService {
             } else {
                 return reportRepository.findById(id);
             }
-        } catch (Exception e) {
-            System.err.println("An error occured while retrieving the report by its id " + e.getMessage());
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            System.err.println("An error occured while retrieving the report by its id, " + e.getMessage());
+            //e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public Report getAllReportByCategory (Category category) {
-        List<Report> resultByCategory = new ArrayList<>();
+    public List<Report> getAllReportByCategory (Category category) {
         try{
+            List<Report> reportsByCategory = reportRepository.findByCategory(category);
+            if(reportsByCategory.isEmpty()){
+                throw new NoSuchElementException("There were no reports found in this specific category.");
+            } else {
+                return reportsByCategory;  
+            }
+        } catch (RuntimeException e){
+            System.err.println("An error occured while trying to access the category, "+ e.getMessage());
+            return new ArrayList<>();
+        }
             
+    }
 
-            throw new EnumConstantNotPresentException(null, null);
+    @Override
+    public Report createReport(Report report){
+        reports.add(report);
+        report.setDateCreated(LocalDateTime.now());
+        try {
+            reportRepository.save(report);
+            return report;
+        } catch (IllegalArgumentException e) {
+            System.err.println("An error occured while creating the report, "+ e.getMessage());
+            return null;
         }
     }
 
-
-    public Report createReport(Report report){}
-
-    public Report updateReport(Long id, Report updatedReport){}
+    @Override
+    public Report updateReport(Long id, Report updatedReport){
+        try {
+            Report report = reportRepository.findById(id).orElseThrow(() -> new NoSuchElementException("The report was not found."));
+            report.setCategory(updatedReport.getCategory());
+            report.setUrl(updatedReport.getUrl());
+            report.setDescription(updatedReport.getDescription());
+            updatedReport.setDateUpdated(LocalDateTime.now());
+            return reportRepository.save(report);
+        } catch (IllegalArgumentException e) {
+            System.err.println("An error occured while updating the report, " + e.getMessage());
+            return null;
+        }
+    }
 
     @Override
     public void deleteReport(Long id) {
@@ -66,8 +96,8 @@ public class ReportServiceImpl implements ReportService {
             Report report = reportRepository.findById(id).orElseThrow(() -> new NoSuchElementException("The report was not found."));
             reportRepository.delete(report);
         } catch (RuntimeException e){
-            System.err.println("An error occured while deleting the report"+ e.getMessage());
-            e.printStackTrace();
+            System.err.println("An error occured while deleting the report, "+ e.getMessage());
+            //e.printStackTrace();
         }
     }
 

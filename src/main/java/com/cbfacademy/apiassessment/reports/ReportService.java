@@ -25,9 +25,9 @@ public interface ReportService {
      * Retrieve all Reports by its category.
      *
      * @param category The category of the Report to retrieve.
-     * @return All report with the specified category, or null if not found.
+     * @return All report with the specified category, or empty list if not found.
      */
-    Report getAllReportByCategory (Category category);
+    List<Report> getAllReportByCategory (Category category);
 
     /**
      * Create a new report.
