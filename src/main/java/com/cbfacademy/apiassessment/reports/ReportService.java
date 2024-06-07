@@ -8,7 +8,7 @@ public interface ReportService {
     
     /**
      *
-     * @return A list of all reports.
+     * @return A list of all reports, or an empty list if not found.
      */
     List<Report> getAllsReports();
 
@@ -33,7 +33,7 @@ public interface ReportService {
      * Create a new report.
      *
      * @param report The report object to create.
-     * @return The created Report.
+     * @return The created Report, or null if object was not created.
      */
     Report createReport(Report report);
 
