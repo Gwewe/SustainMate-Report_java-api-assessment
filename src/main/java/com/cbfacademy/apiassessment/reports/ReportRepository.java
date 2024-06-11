@@ -4,6 +4,8 @@ import java.util.List;
 /*  ReportRepository interface defining operations to managed report in the system. */
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.cbfacademy.apiassessment.reports.Enumeration.Category;
+
 public interface ReportRepository extends JpaRepository <Report, Long> {
     
     

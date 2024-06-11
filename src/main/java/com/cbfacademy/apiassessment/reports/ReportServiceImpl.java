@@ -3,22 +3,25 @@ package com.cbfacademy.apiassessment.reports;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cbfacademy.apiassessment.reports.Enumeration.Category;
 
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final List<Report> reports = new ArrayList<>();
     private final ReportRepository reportRepository;
+    private final Category category;
 
-    @Autowired
-    public ReportServiceImpl(ReportRepository reportRepository){
+    
+    public ReportServiceImpl(ReportRepository reportRepository, Category category){
         this.reportRepository = reportRepository;
+        this.category = category;
     }
 
     @Override
-    public List<Report> getAllsReports() {
+    public List<Report> getAllReports() {
         try {
             if (reports == null || reports.isEmpty()) {
                 throw new NoSuchElementException("The reports list is empty or null.");
@@ -41,7 +44,6 @@ public class ReportServiceImpl implements ReportService {
             }
         } catch (RuntimeException e) {
             System.err.println("An error occured while retrieving the report by its id, " + e.getMessage());
-            //e.printStackTrace();
             return null;
         }
     }
@@ -66,6 +68,7 @@ public class ReportServiceImpl implements ReportService {
     public Report createReport(Report report){
         reports.add(report);
         report.setDateCreated(LocalDateTime.now());
+        report.setCategory(category);
         try {
             reportRepository.save(report);
             return report;

@@ -1,4 +1,4 @@
-package com.cbfacademy.apiassessment.reports;
+package com.cbfacademy.apiassessment.reports.Enumeration;
 
 /*  Enumeration Category file containing 
     predefined constants (three categories) with displayName fields for human readability.*/

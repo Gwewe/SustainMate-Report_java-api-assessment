@@ -3,6 +3,8 @@ package com.cbfacademy.apiassessment.reports;
 import java.util.List;
 import java.util.Optional;
 
+import com.cbfacademy.apiassessment.reports.Enumeration.Category;
+
 public interface ReportService {
 
     
@@ -10,7 +12,7 @@ public interface ReportService {
      *
      * @return A list of all reports, or an empty list if not found.
      */
-    List<Report> getAllsReports();
+    List<Report> getAllReports();
 
 
     /**

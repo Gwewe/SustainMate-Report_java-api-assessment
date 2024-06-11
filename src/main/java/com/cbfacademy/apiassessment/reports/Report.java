@@ -3,6 +3,8 @@ package com.cbfacademy.apiassessment.reports;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.cbfacademy.apiassessment.reports.Enumeration.Category;
+
 @Entity
 @Table(name = "reports")
 public class Report {
