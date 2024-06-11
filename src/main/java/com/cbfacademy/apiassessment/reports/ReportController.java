@@ -65,7 +65,7 @@ public class ReportController {
 
 
     //To get alls the reports by their category.
-    @GetMapping
+    @GetMapping("/category/{category}")
     public ResponseEntity<List<Report>> getAllReportByCategory(@PathVariable Category category) {
         try {
             List<Report> reportsbyCategory = reportService.getAllReportByCategory(category);
