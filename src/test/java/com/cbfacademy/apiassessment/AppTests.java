@@ -9,7 +9,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,8 +28,9 @@ class ReportSearchRestApiApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@BeforeEach
-	public void setUp() throws Exception {
-		this.base = new URL("http://localhost:" + port + "/greeting");
+	public void setUp() throws URISyntaxException, java.net.MalformedURLException  {
+		this.base = new URI("http://localhost:" + port + "/greeting").toURL();	
+
 	}
 
 	@Test
