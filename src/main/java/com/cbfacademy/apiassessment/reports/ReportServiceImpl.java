@@ -1,23 +1,22 @@
 package com.cbfacademy.apiassessment.reports;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
-import com.cbfacademy.apiassessment.reports.Enumeration.Category;
 
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final List<Report> reports = new ArrayList<>();
     private final ReportRepository reportRepository;
-    private final Category category;
 
     
     public ReportServiceImpl(ReportRepository reportRepository, Category category){
         this.reportRepository = reportRepository;
-        this.category = category;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ReportServiceImpl implements ReportService {
             }
         } catch (RuntimeException e) {
             System.err.println("An error occured while retrieving the report by its id, " + e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -68,10 +67,8 @@ public class ReportServiceImpl implements ReportService {
     public Report createReport(Report report){
         reports.add(report);
         report.setDateCreated(LocalDateTime.now());
-        report.setCategory(category);
         try {
-            reportRepository.save(report);
-            return report;
+            return reportRepository.save(report);
         } catch (IllegalArgumentException e) {
             System.err.println("An error occured while creating the report, "+ e.getMessage());
             return null;
@@ -85,7 +82,7 @@ public class ReportServiceImpl implements ReportService {
             report.setCategory(updatedReport.getCategory());
             report.setUrl(updatedReport.getUrl());
             report.setDescription(updatedReport.getDescription());
-            updatedReport.setDateUpdated(LocalDateTime.now());
+            report.setDateUpdated(LocalDateTime.now());
             return reportRepository.save(report);
         } catch (IllegalArgumentException e) {
             System.err.println("An error occured while updating the report, " + e.getMessage());

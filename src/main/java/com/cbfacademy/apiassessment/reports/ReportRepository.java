@@ -1,10 +1,7 @@
 package com.cbfacademy.apiassessment.reports;
 import java.util.List;
 
-/*  ReportRepository interface defining operations to managed report in the system. */
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.cbfacademy.apiassessment.reports.Enumeration.Category;
 
 public interface ReportRepository extends JpaRepository <Report, Long> {
     
@@ -12,7 +9,7 @@ public interface ReportRepository extends JpaRepository <Report, Long> {
     /*                  MAIN Method
     This method will search for report based on a keyword.
     */
-    List<Report> searchByKeyword (String keyword);
+    //List<Report> searchByKeyword (String keyword);
 
     
     /*          Additional method

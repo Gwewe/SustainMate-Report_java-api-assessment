@@ -3,8 +3,6 @@ package com.cbfacademy.apiassessment.reports;
 import java.util.List;
 import java.util.Optional;
 
-import com.cbfacademy.apiassessment.reports.Enumeration.Category;
-
 public interface ReportService {
 
     
