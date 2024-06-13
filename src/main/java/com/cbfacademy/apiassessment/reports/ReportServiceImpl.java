@@ -15,7 +15,7 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
 
     
-    public ReportServiceImpl(ReportRepository reportRepository, Category category){
+    public ReportServiceImpl(ReportRepository reportRepository){
         this.reportRepository = reportRepository;
     }
 
@@ -97,7 +97,6 @@ public class ReportServiceImpl implements ReportService {
             reportRepository.delete(report);
         } catch (RuntimeException e){
             System.err.println("An error occured while deleting the report, "+ e.getMessage());
-            //e.printStackTrace();
         }
     }
 
