@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -79,7 +78,7 @@ public class ReportController {
 
 
     //To create the report.
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Report> createReport (@RequestBody Report report) {
         try {
             Report createdReport = reportService.createReport(report);
@@ -91,7 +90,7 @@ public class ReportController {
     }
 
     //To update the report.
-    @PutMapping
+    @PutMapping ("/{id}")
     public ResponseEntity<Report> updateReport (@PathVariable Long id, @RequestBody Report updatedReport){
         try {
             Report reportUpdated = reportService.updateReport(id, updatedReport);
