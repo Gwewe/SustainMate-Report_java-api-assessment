@@ -66,7 +66,6 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Report createReport(Report report){
         reports.add(report);
-        report.setDateCreated(LocalDateTime.now());
         try {
             return reportRepository.save(report);
         } catch (IllegalArgumentException e) {
@@ -82,7 +81,6 @@ public class ReportServiceImpl implements ReportService {
             report.setCategory(updatedReport.getCategory());
             report.setUrl(updatedReport.getUrl());
             report.setDescription(updatedReport.getDescription());
-            report.setDateUpdated(LocalDateTime.now());
             return reportRepository.save(report);
         } catch (IllegalArgumentException e) {
             System.err.println("An error occured while updating the report, " + e.getMessage());

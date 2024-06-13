@@ -1,7 +1,7 @@
 package com.cbfacademy.apiassessment.reports;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "reports")
@@ -18,19 +18,17 @@ public class Report {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateUpdated;
+    private Instant dateCreated;
 
     //Default constructor
     public Report() {}
 
     //Constructor with the other fields
-    public Report( String url, String description, Category category, LocalDateTime dateCreated, LocalDateTime dateUpdated) {
+    public Report( String url, String description, Category category, Instant dateCreated) {
         this.url = url;
         this.description = description;
         this.category = category;
         this.dateCreated = dateCreated;
-        this.dateUpdated = dateUpdated;
     }
 
     
@@ -51,15 +49,10 @@ public class Report {
         return category;
     }
 
-    public LocalDateTime getDateCreated(){
+    public Instant getDateCreated(){
         return dateCreated;
     }
-
-    public LocalDateTime getDateUpdated(){
-        return dateUpdated;
-    }
-    
-
+ 
     // All the Setters
     public void setUrl(String url){
         this.url = url;
@@ -73,11 +66,7 @@ public class Report {
         this.category = category;
     }
 
-    public void setDateCreated (LocalDateTime dateCreated){
+    public void setDateCreated (Instant dateCreated){
         this.dateCreated = dateCreated;
-    }
-
-    public void setDateUpdated (LocalDateTime dateUpdated){
-        this.dateUpdated = dateUpdated;
     }
 }
