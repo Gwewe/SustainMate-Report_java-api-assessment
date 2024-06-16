@@ -102,38 +102,25 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> searchByKeyword (String wordToFind){
         List<Report> matchingReport = new ArrayList<>();
         String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
-        reportsloop: for (Report report: reports){
-            String lowercaseDesc = report.getDescription().toLowerCase();
+        try{
+            for (Report report: reports){
+                String lowercaseDesc = report.getDescription().toLowerCase();
+                boolean wordsPresent = true;
 
-            for(String keyword : keywords ){
-                if (!lowercaseDesc.contains(keyword)){
-                    continue reportsloop;
+                for(String keyword : keywords ){
+                    if (!lowercaseDesc.contains(keyword)){
+                        wordsPresent = false;
+                        break;
+                    }
+                }
+                if (wordsPresent){
+                    matchingReport.add(report);
                 }
             }
-            matchingReport.add(report);      
+        } catch(RuntimeException e){
+            System.err.println("An error occured while searching for the keyword "+ e.getMessage());
         }
-        return matchingReport;       
+        return matchingReport;                  
     }
-    
-    //Version using boolean.
-    /*public List<Report> searchByKeyword (String wordToFind){
-        List<Report> matchingReport = new ArrayList<>();
-        String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
-        for (Report report: reports){
-            String lowercaseDesc = report.getDescription().toLowerCase();
-            boolean wordsPresent = true;
-
-            for(String keyword : keywords ){
-                if (!lowercaseDesc.contains(keyword)){
-                    wordsPresent = false;
-                    break;
-                }
-            }
-            if (wordsPresent){
-                matchingReport.add(report);
-            }    
-        }
-        return matchingReport;       
-    } */
 
 }
