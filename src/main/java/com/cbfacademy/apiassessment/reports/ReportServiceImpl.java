@@ -1,6 +1,7 @@
 package com.cbfacademy.apiassessment.reports;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -97,6 +98,43 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    
+    //Implementing the search by keyword linear search algorithm.
+    public List<Report> searchByKeyword (String wordToFind){
+        List<Report> matchingReport = new ArrayList<>();
+        String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
+        reportsloop: for (Report report: reports){
+            String lowercaseDesc = report.getDescription().toLowerCase();
 
+            for(String keyword : keywords ){
+                if (!lowercaseDesc.contains(keyword)){
+                    continue reportsloop;
+                }
+            }
+            matchingReport.add(report);      
+        }
+        return matchingReport;       
+    }
+    
+    //Version using boolean.
+    /*public List<Report> searchByKeyword (String wordToFind){
+        List<Report> matchingReport = new ArrayList<>();
+        String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
+        for (Report report: reports){
+            String lowercaseDesc = report.getDescription().toLowerCase();
+            boolean wordsPresent = true;
+
+            for(String keyword : keywords ){
+                if (!lowercaseDesc.contains(keyword)){
+                    wordsPresent = false;
+                    break;
+                }
+            }
+            if (wordsPresent){
+                matchingReport.add(report);
+            }    
+        }
+        return matchingReport;       
+    } */
 
 }

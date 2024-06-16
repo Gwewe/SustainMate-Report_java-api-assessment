@@ -104,15 +104,18 @@ public class ReportController {
 
     //To delete a report.
     @DeleteMapping ("/{id}")
-    public ResponseEntity <Void> deleteReport(@PathVariable Long id){
+    public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
         try {
             reportService.deleteReport(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e){
-            logGer.error("An error occured while deleting the report {}", id, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            logGer.error("No report found with id: {}", id, e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+        logGer.error("An error occurred while deleting the report with id: {}", id, e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 }
+
     
