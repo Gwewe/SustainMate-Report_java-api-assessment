@@ -22,7 +22,7 @@ import com.cbfacademy.apiassessment.reports.ReportService;
 public class ReportServiceTest {
     private ReportService service;
     private ReportRepository mockRepository;
-    private Report report1, report2;
+    private Report report1, report2, report3, report4;
 
     @BeforeEach
     void setUp() {
@@ -30,6 +30,8 @@ public class ReportServiceTest {
         service = new ReportServiceImpl(mockRepository);
         report1 = new Report("www.url1.co.uk", "Description1", Category.BEST_PRACTICES, Instant.now());
         report2 = new Report("www.url2.co.uk", "Description2", Category.REGULATIONS, Instant.now());
+        report3 = new Report("www.url3.com", "Description3", Category.BEST_PRACTICES, Instant.now());
+        report4 = new Report("www.url4.co.uk", "Description4", Category.REGULATIONS, Instant.now());
     }
 
     @Test
@@ -75,9 +77,32 @@ public class ReportServiceTest {
         //mock the findbyId method to return optional empty when nonexistingId was passed.
         Mockito.when(mockRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
-        Optional<Report> optionalReport = service.findReportById(nonExistingId);
-        assertThrows(NoSuchElementException.class, () ->
-        .optionalReport.orElseThrow(() -> new NoSuchElementException(nonExistingId + ": No report with this Id was found.")));
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+            service.findReportById(nonExistingId).orElseThrow(() -> new NoSuchElementException(nonExistingId + ": No report with this Id was found.")); 
+        });
+
+        assertEquals(nonExistingId + ": No report with this Id was found.", exception.getMessage());
+
+    }
+
+    @Test
+    void testGetAllReportByCategory(){
+        // Mock the findbycategory method to return the list of reports for Regulations and best practices categories.
+        Mockito.when(mockRepository.findByCategory(Category.REGULATIONS)).thenReturn(List.of(report2, report4));
+        Mockito.when(mockRepository.findByCategory(Category.BEST_PRACTICES)).thenReturn(List.of(report1, report3));
+
+        // retrieve the best practices reports and check if the list has the correct size and content.
+        List<Report> bestPracticesReports = service.getAllReportByCategory(Category.BEST_PRACTICES);
+        assertEquals(2, bestPracticesReports.size());
+        assertTrue(bestPracticesReports.contains(report1));
+        assertTrue(bestPracticesReports.contains(report3));
+
+        //retrieve the regulations reports and check if the list has the correct size and content.
+        List<Report> regulationsReports = service.getAllReportByCategory(Category.REGULATIONS);
+        assertEquals(2, regulationsReports.size());
+        assertTrue(regulationsReports.contains(report2));
+        assertTrue(regulationsReports.contains(report4));
+
 
     }
     
