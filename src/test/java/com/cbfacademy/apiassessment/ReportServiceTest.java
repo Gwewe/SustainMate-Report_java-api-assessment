@@ -1,6 +1,7 @@
 package com.cbfacademy.apiassessment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
@@ -52,13 +53,32 @@ public class ReportServiceTest {
 
     @Test
     void testFindExistingReportById() {
+        // Mock save method to return the report that was passed.
         Mockito.when(mockRepository.save(Mockito.any(Report.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Mock findById method to return Optional that has report1 when report1 Id was passed.
         Mockito.when(mockRepository.findById(report1.getId())).thenReturn(Optional.of(report1));
+        // saving the report.
         service.createReport(report1);
+        // Retrieve the report by it's id.
         Optional<Report> optionalReport = service.findReportById(report1.getId());
-        Report found = optionalReport.orElseThrow(() -> new NoSuchElementException("No report with this Id was found"));
-        
+        //check if report with the id was found if not throw nosuchelementexception.
+        Report found = optionalReport.orElseThrow(() -> new NoSuchElementException(report1.getId() + "No report with this Id was found"));
+       
+        // check if report found had the id expected.
         assertEquals(report1.getId(), found.getId());
+    }
+
+    @Test
+    void testFindNonExistingReportById() {
+        //non existing id.
+        Long nonExistingId = 999L;
+        //mock the findbyId method to return optional empty when nonexistingId was passed.
+        Mockito.when(mockRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        Optional<Report> optionalReport = service.findReportById(nonExistingId);
+        assertThrows(NoSuchElementException.class, () ->
+        .optionalReport.orElseThrow(() -> new NoSuchElementException(nonExistingId + ": No report with this Id was found.")));
+
     }
     
 }

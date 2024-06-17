@@ -36,7 +36,7 @@ public class ReportServiceImpl implements ReportService {
     public Optional <Report> findReportById (Long id){
         try {
             if (id == null || id <= 0){
-                throw new IllegalArgumentException(id + ": The id of the report is null or incorrect.");
+                throw new NoSuchElementException (id + ": No report with this Id was found.");
             } else {
                 return reportRepository.findById(id);
             }
