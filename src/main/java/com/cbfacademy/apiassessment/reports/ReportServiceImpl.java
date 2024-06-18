@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService {
         try{
             List<Report> reportsByCategory = reportRepository.findByCategory(category);
             if(reportsByCategory.isEmpty()){
-                throw new NoSuchElementException("There were no reports found in this specific category.");
+                throw new NoSuchElementException("No reports were found in this specific category.");
             } else {
                 return reportsByCategory;  
             }
@@ -64,10 +64,10 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Report createReport(Report report){
-        reports.add(report);
         try {
+            reports.add(report);
             return reportRepository.save(report);
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.err.println("An error occured while creating the report, "+ e.getMessage());
             return null;
         }
@@ -81,7 +81,7 @@ public class ReportServiceImpl implements ReportService {
             report.setUrl(updatedReport.getUrl());
             report.setDescription(updatedReport.getDescription());
             return reportRepository.save(report);
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.err.println("An error occured while updating the report, " + e.getMessage());
             return null;
         }
