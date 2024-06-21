@@ -60,7 +60,7 @@ class AppTests {
 	private ReportRepository mockRepository;
 
 	@BeforeEach
-    void initializeTestData() throws URISyntaxException {
+    void setUp() throws URISyntaxException {
 		this.baseURI = UriComponentsBuilder.newInstance()
 			.scheme("http")
 			.host("localhost")
@@ -252,7 +252,7 @@ class AppTests {
 		String keyword = "test";
 		List<Report> matchingReports = Arrays.asList(report1);
 
-		Mockito.when(mockRepository.searchByKeyword(keyword)).thenReturn(matchingReports);
+		Mockito.when(mockRepository.searchDescriptionByKeyword(keyword)).thenReturn(matchingReports);
 		ResponseEntity<List<Report>> response = restTemplate.exchange(
 			baseURI.resolve("search?wordToFind="+ keyword),
 			HttpMethod.GET,
@@ -266,15 +266,15 @@ class AppTests {
 		assertNotNull(responseBody);
 		assertEquals(matchingReports.size(), responseBody.size());
 
-		Mockito.verify(mockRepository).searchByKeyword(keyword);
+		Mockito.verify(mockRepository).searchDescriptionByKeyword(keyword);
 	}
 
 	@Test
 	@Description("GET /api/reports/search returns no content when no report match with the keyword.")
-	void testGetEmptySearchByKeyword() {
+	void testGetEmptySearchDescriptionByKeyword() {
 		String keyword = "nonexistent";
 
-		Mockito.when(mockRepository.searchByKeyword(keyword)).thenReturn(Collections.emptyList());
+		Mockito.when(mockRepository.searchDescriptionByKeyword(keyword)).thenReturn(Collections.emptyList());
 
 		ResponseEntity<List<Report>> response = restTemplate.exchange(
 			baseURI.resolve("/search?wordToFind="+ keyword),
@@ -288,10 +288,10 @@ class AppTests {
 
 	@Test
 	@Description("GET /api/reports/search returns internal server error when exception occurs")
-	void testGetExceptionSearchByKeyword() {
+	void testGetExceptionSearchDescriptionByKeyword() {
 		String keyword = "test";
 
-		Mockito.when(mockRepository.searchByKeyword(keyword)).thenThrow(new RuntimeException("An unexpected error occured while retrieving reports matching the keyword."));
+		Mockito.when(mockRepository.searchDescriptionByKeyword(keyword)).thenThrow(new RuntimeException("An unexpected error occured while retrieving reports matching the keyword."));
 
 		ResponseEntity<List<Report>> response = restTemplate.exchange(
 			baseURI.resolve("/search?wordToFind="+ keyword),

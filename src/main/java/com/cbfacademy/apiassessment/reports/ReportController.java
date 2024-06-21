@@ -79,11 +79,11 @@ public class ReportController {
         }
     }
 
-    //To get the search result of the searchbykeyword method
+    //To get the search result of the searchdescriptionbykeyword method
     @GetMapping("/search")
-    public ResponseEntity<List<Report>> searchByKeyword (@RequestParam String wordToFind){
+    public ResponseEntity<List<Report>> searchDescriptionByKeyword (@RequestParam String wordToFind){
         try {
-            List<Report> matchingReport = reportRepository.searchByKeyword(wordToFind);
+            List<Report> matchingReport = reportRepository.searchDescriptionByKeyword(wordToFind);
             if (matchingReport.isEmpty()){
                 logGer.info("No content found, no report matching the keyword {}", wordToFind);
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

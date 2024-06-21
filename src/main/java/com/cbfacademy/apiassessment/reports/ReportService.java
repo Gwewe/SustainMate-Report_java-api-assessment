@@ -53,9 +53,4 @@ public interface ReportService {
      */
     void deleteReport(Long id);
 
-
-
-    //List<Report> searchByCategory(Category category);
-
-
 }

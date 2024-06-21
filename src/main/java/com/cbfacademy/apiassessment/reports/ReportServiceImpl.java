@@ -99,7 +99,7 @@ public class ReportServiceImpl implements ReportService {
 
     
     //Implementing the search by keyword linear search algorithm.
-    public List<Report> searchByKeyword (String wordToFind){
+    public List<Report> searchDescriptionByKeyword (String wordToFind){
         List<Report> matchingReport = new ArrayList<>();
         String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
         try{
