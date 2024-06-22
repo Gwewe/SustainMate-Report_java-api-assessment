@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    private final List<Report> reports = new ArrayList<>();
     private final ReportRepository reportRepository;
 
     
@@ -21,7 +20,8 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> getAllReports() {
         try {
-            if (reports == null || reports.isEmpty()) {
+            List<Report> reports = reportRepository.findAll();
+            if (reports.isEmpty()) {
                 throw new NoSuchElementException("The reports list is empty or null.");
             } else {
                 return reports;
@@ -65,6 +65,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Report createReport(Report report){
         try {
+            List<Report> reports = reportRepository.findAll();
             reports.add(report);
             return reportRepository.save(report);
         } catch (RuntimeException e) {
@@ -94,6 +95,7 @@ public class ReportServiceImpl implements ReportService {
             reportRepository.delete(report);
         } catch (RuntimeException e){
             System.err.println("An error occured while deleting the report, "+ e.getMessage());
+            throw e;
         }
     }
 
@@ -103,6 +105,7 @@ public class ReportServiceImpl implements ReportService {
         List<Report> matchingReport = new ArrayList<>();
         String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
         try{
+            List<Report> reports = reportRepository.findAll();
             for (Report report: reports){
                 String lowercaseDesc = report.getDescription().toLowerCase();
                 boolean wordsPresent = true;
