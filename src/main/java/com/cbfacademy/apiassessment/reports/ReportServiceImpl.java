@@ -100,18 +100,18 @@ public class ReportServiceImpl implements ReportService {
     }
 
     
-    //Implementing the search by keyword linear search algorithm.
+    //Implementing the linear search algorithm that will search description to find reports that will match with keywords.
     public List<Report> searchDescriptionByKeyword (String wordToFind){
         List<Report> matchingReport = new ArrayList<>();
         String[] keywords = wordToFind.toLowerCase().split("[,\\.\\s]");
         try{
             List<Report> reports = reportRepository.findAll();
             for (Report report: reports){
-                String lowercaseDesc = report.getDescription().toLowerCase();
+                String lowercaseDescription = report.getDescription().toLowerCase();
                 boolean wordsPresent = true;
 
                 for(String keyword : keywords ){
-                    if (!lowercaseDesc.contains(keyword)){
+                    if (!lowercaseDescription.contains(keyword)){
                         wordsPresent = false;
                         break;
                     }
