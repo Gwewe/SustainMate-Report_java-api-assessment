@@ -18,11 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
+@Tag(name = "SustainMate Report API", description = "API used to fetch and manage reports regarding sustainability in the Uk.")
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
+
     private final ReportService reportService;
     private final ReportRepository reportRepository;
     // Following best practice and creating a separate logger instance for Report controller.
@@ -34,6 +40,11 @@ public class ReportController {
         this.reportRepository = reportRepository;
     }
 
+    @Operation(summary = "Get all reports", description = "Returns a list of all reports saved in the database.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved list of reports."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To get all the reports.
     @GetMapping
     public ResponseEntity<List<Report>> getAllReports() {
@@ -46,6 +57,13 @@ public class ReportController {
         }
     }
 
+    
+    @Operation(summary = "Get the report by their id ", description = "Returns the report saved in the database with the given report Id.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the report with this Id."),
+        @ApiResponse(responseCode = "404", description = "The report with this id was not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To find report by their id.
     @GetMapping("/{id}")
     public ResponseEntity<Report> findReportById(@PathVariable Long id){
@@ -62,7 +80,12 @@ public class ReportController {
         }
     }
 
-
+    @Operation(summary = "Get reports by category", description = "Returns a list of reports that belong to a specific category.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of reports for this category."),
+        @ApiResponse(responseCode = "204", description = "Request is correct but no content was found for this category."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To get alls the reports by their category.
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Report>> getAllReportByCategory(@PathVariable Category category) {
@@ -79,6 +102,12 @@ public class ReportController {
         }
     }
 
+    @Operation(summary = "Search for reports by keyword", description = "Returns a list of reports that contain a specific keyword in their description.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of reports matching keyword."),
+        @ApiResponse(responseCode = "204", description = "No reports found matching the given keyword."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To get the search result of the searchdescriptionbykeyword method
     @GetMapping("/search")
     public ResponseEntity<List<Report>> searchDescriptionByKeyword (@RequestParam String wordToFind){
@@ -90,12 +119,18 @@ public class ReportController {
             }
             return ResponseEntity.ok(matchingReport);
         } catch (Exception e) {
-            logGer.error("An unexpected error occured while retrieving reports matching the keyword.", e);
+            logGer.error("An unexpected error occurred while retrieving reports matching the keyword.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();        
         }
     }
 
 
+    @Operation(summary = "Create a new report", description = "Add a new report in the list of reports.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "201", description = "Successfully created the new report."),
+        @ApiResponse(responseCode = "400", description = "Bad request, failed to create the report."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To create the report.
     @PostMapping("/")
     public ResponseEntity<Report> createReport (@RequestBody Report report) {
@@ -106,11 +141,17 @@ public class ReportController {
             logGer.error("Failed to create the report", e);
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            logGer.error("An unexpected error occured while creating the report.", e);
+            logGer.error("An unexpected error occurred while creating the report.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();        
         }
     }
 
+    @Operation(summary = "Update the report", description = "Update an existing report using its Id.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "200", description = "Successfully updated the report."),
+        @ApiResponse(responseCode = "404", description = "The report the given id was not found."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To update the report.
     @PutMapping ("/{id}")
     public ResponseEntity<Report> updateReport (@PathVariable Long id, @RequestBody Report updatedReport){
@@ -121,18 +162,24 @@ public class ReportController {
             logGer.error("No report with ID {} were found, failed to update the report.", id, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(updatedReport);
         } catch (Exception e) {
-            logGer.error("An unexpected error occured while updating the report with ID {}.", id, e);
+            logGer.error("An unexpected error occurred while updating the report with ID {}.", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();        
         }
     }
 
 
+    @Operation(summary = "Delete the report", description = "Delete the report using the report Id.")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "204", description = "Successfully deleted the report."),
+        @ApiResponse(responseCode = "404", description = "The report with the given Id was not found."),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     //To delete a report.
     @DeleteMapping ("/{id}")
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
         try {
             reportService.deleteReport(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (NoSuchElementException e) {
             logGer.error("No report found with id: {}, failed to delete the report.", id, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
