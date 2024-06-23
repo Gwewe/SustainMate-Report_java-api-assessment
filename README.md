@@ -2,7 +2,7 @@
 
 Empower individuals across all industries to collaboratively build and share knowledge on sustainability, fostering a global community dedicated to environmental stewardship and positive change. :handshake:
 
-## <u>Report page API</u>
+## <u>Report page API</u> :leaves:
 
 The SustainMate Report API provides endpoints for managing and fetching reports related to sustainability, focusing on regulations, corporate initiatives, and best practices in the UK.
 
@@ -43,7 +43,7 @@ The SustainMate Report API provides endpoints for managing and fetching reports 
   </ol>
 </details>
 
-### <u>Prerequisites</u>
+### <u>Prerequisites</u> 	:deciduous_tree:
 
 Ensure the following elements are installed:
 
