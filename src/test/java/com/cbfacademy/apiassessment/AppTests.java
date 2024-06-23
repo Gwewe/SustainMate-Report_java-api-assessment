@@ -291,7 +291,7 @@ class AppTests {
 	void testGetExceptionSearchDescriptionByKeyword() {
 		String keyword = "test";
 
-		Mockito.when(mockRepository.searchDescriptionByKeyword(keyword)).thenThrow(new RuntimeException("An unexpected error occured while retrieving reports matching the keyword."));
+		Mockito.when(mockRepository.searchDescriptionByKeyword(keyword)).thenThrow(new RuntimeException("An unexpected error occurred while retrieving reports matching the keyword."));
 
 		ResponseEntity<List<Report>> response = restTemplate.exchange(
 			baseURI.resolve("/search?wordToFind="+ keyword),
@@ -346,7 +346,7 @@ class AppTests {
 	@Description("POST /api/reports/ returns internal server error when an exception occurs.")
 	void testPostExceptionCreateReport() {
 		Report failReport = new Report(null, "New Description1", Category.CORPORATE_INITIATIVES, Instant.now());
-		Mockito.when(reportService.createReport(Mockito.any(Report.class))).thenThrow(new RuntimeException("An unexpected error occured while creating the report."));
+		Mockito.when(reportService.createReport(Mockito.any(Report.class))).thenThrow(new RuntimeException("An unexpected error occurred while creating the report."));
 
 		ResponseEntity<Report> response = restTemplate.postForEntity(
 			baseURI, 
@@ -419,7 +419,7 @@ class AppTests {
 	
 		Mockito.when(mockRepository.findById(reportId)).thenReturn(Optional.of(existingReport));
 
-		Mockito.when(mockRepository.save(Mockito.any(Report.class))).thenThrow(new RuntimeException("An unexpected error occured while updating the report with ID "+ reportId));
+		Mockito.when(mockRepository.save(Mockito.any(Report.class))).thenThrow(new RuntimeException("An unexpected error occurred while updating the report with ID "+ reportId));
 	
 		String url = baseURI.resolve(String.format("/api/reports/%d", reportId)).toString();
 		ResponseEntity<Report> response = restTemplate.exchange(
