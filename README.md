@@ -43,7 +43,7 @@ The SustainMate Report API provides endpoints for managing and fetching reports 
   </ol>
 </details>
 
-### <u>Prerequisites</u> 	:deciduous_tree:
+### <u>Prerequisites</u> :deciduous_tree:
 
 Ensure the following elements are installed:
 
