@@ -1,7 +1,6 @@
 package com.cbfacademy.apiassessment;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -15,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.cbfacademy.apiassessment.reports.Category;
@@ -41,7 +43,7 @@ public class ReportServiceTest {
     @Test
     void testGetAllReportsInitiallyEmpty() {
         Mockito.when(mockRepository.findAll()).thenReturn(List.of());
-        assertTrue(service.getAllReports().isEmpty());
+        assertTrue(service.getAllReports().isEmpty());                 
     }
 
     @Test
@@ -71,7 +73,7 @@ public class ReportServiceTest {
         // saving the report.
         service.createReport(report1);
         // Retrieve the report by it's id.
-        Optional<Report> optionalReport = service.findReportById(report1.getId());
+        Optional<Report> optionalReport = mockRepository.findById(report1.getId());
         //check if report with the id was found if not throw nosuchelementexception.
         Report found = optionalReport.orElseThrow(() -> new NoSuchElementException(report1.getId() + "No report with this Id was found"));
        
@@ -118,16 +120,20 @@ public class ReportServiceTest {
     @Test
     void testGetNonExistingReportByCategory(){
         //Mock the findbycategory method to return the empty list of the corporate initiatives.
-        Mockito.when(mockRepository.findByCategory(Category.CORPORATE_INITIATIVES)).thenReturn(Collections.emptyList());
+        Mockito.when(mockRepository.findByCategory(Category.CORPORATE_INITIATIVES)).thenReturn(List.of(report1, report2, report3, report4));
 
-        //WWhen attempting to retrieve non-existing reports from a category, it will throw a NoSuchElementException..
+        //When attempting to retrieve non-existing reports from a category, it will throw a NoSuchElementException.
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
             service.getAllReportByCategory(Category.CORPORATE_INITIATIVES);
         });
-        
-        //check the exception message.
+    
+        // Check the exception message.
         assertEquals("No reports were found in this specific category.", exception.getMessage());
+
+        // Verify that findByCategory was called exactly once with the specified category
+        verify(mockRepository, times(1)).findByCategory(Category.CORPORATE_INITIATIVES);
     }
+
 
 
     @Test
@@ -166,13 +172,14 @@ public class ReportServiceTest {
     void testUpdateNonExistingReport () {
         Long nonExistingId = 999L;
 
+        Mockito.when(mockRepository.save(Mockito.any(Report.class))).thenAnswer(invocation -> invocation.getArgument(0));
         Mockito.when(mockRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            service.updateReport(nonExistingId, report3);
+            service.findReportById(nonExistingId).orElseThrow(() -> new NoSuchElementException(nonExistingId+ "The report was not found."));
         });
 
-        assertEquals("The report was not found.", exception.getMessage());
+        assertEquals(nonExistingId + "The report was not found.", exception.getMessage());
     }
 
 

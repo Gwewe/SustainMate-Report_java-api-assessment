@@ -15,6 +15,7 @@ public interface ReportRepository extends JpaRepository <Report, Long> {
     */
     @Query("SELECT r FROM Report r WHERE LOWER(r.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Report> searchDescriptionByKeyword (String keyword);
+    //@Query("SELECT r FROM Report r WHERE r.category = :category")
 
     
     /**          
