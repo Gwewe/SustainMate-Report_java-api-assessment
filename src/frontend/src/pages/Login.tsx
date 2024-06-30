@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './About.css';
+import './Login.css';
 
-const About: React.FC = () => {
+const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const goToReports = () => {
@@ -10,9 +10,9 @@ const About: React.FC = () => {
       };
 
   return (
-    <div className="about">
+    <div className="login">
       <h2>Welcome to SustainMate</h2>
-      <p>You caught us while we were working on this feature. SustainMate's new about page will be coming soon.</p>
+      <p>You caught us while we were working on this feature. SustainMate's new Log In page will be coming soon.</p>
       <button onClick={goToReports} className="button-reports">
         Go to Reports
         </button>
@@ -20,4 +20,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About;
+export default Login;
