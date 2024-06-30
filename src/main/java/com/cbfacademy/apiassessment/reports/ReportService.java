@@ -14,6 +14,14 @@ public interface ReportService {
 
 
     /**
+     * Retrieve Report by its category.
+     *
+     * @param category The category of the Report to retrieve.
+     * @return The Report with the specified category, or optional empty if not found.
+     */
+    Optional <List<Report>> findByCategory(Category category);
+
+    /**
      * Retrieve Report by its ID.
      *
      * @param id The ID of the Report to retrieve.

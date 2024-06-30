@@ -46,6 +46,34 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    //defining findbycategory method
+    @Override
+    public Optional <List<Report>> findByCategory (Category category) {
+        try{
+            if (category == null) {
+                throw new IllegalArgumentException("Oups the category input can not be null or empty");
+            }
+
+            List<Report> reports = reportRepository.findAll();
+            List<Report> matchingReportByCategory = new ArrayList<>();
+
+            for (Report report : reports){
+                if (report.getCategory() == category) {
+                    matchingReportByCategory.add(report);
+                }
+            }
+    
+            if(matchingReportByCategory.isEmpty()){
+                throw new NoSuchElementException("Oups, No reports were found in this specific category.");
+            }
+            return Optional.of(matchingReportByCategory);
+        } catch (RuntimeException e){
+            System.err.println("An error occured while trying to access the category, "+ e.getMessage());
+            return Optional.empty();
+        }
+            
+    }
+
     @Override
     public List<Report> getAllReportByCategory (Category category) {
         try{
