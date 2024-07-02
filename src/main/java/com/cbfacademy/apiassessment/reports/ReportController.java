@@ -30,14 +30,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class ReportController {
 
     private final ReportService reportService;
-    private final ReportRepository reportRepository;
+
     // Following best practice and creating a separate logger instance for Report controller.
     private static final Logger logGer = LoggerFactory.getLogger(ReportController.class); 
 
     //Report controller constructor.
-    public ReportController(ReportService reportService, ReportRepository reportRepository){
+    public ReportController(ReportService reportService){
         this.reportService = reportService;
-        this.reportRepository = reportRepository;
     }
 
     @Operation(summary = "Get all reports", description = "Returns a list of all reports saved in the database.")
@@ -110,14 +109,19 @@ public class ReportController {
     })
     //To get the search result of the searchdescriptionbykeyword method
     @GetMapping("/search")
-    public ResponseEntity<List<Report>> searchDescriptionByKeyword (@RequestParam String wordToFind){
+    public ResponseEntity<List<Report>> searchDescriptionByKeyword (@RequestParam String keyword, @RequestParam(defaultValue = "false") boolean useLinearSearch){
         try {
-            List<Report> matchingReport = reportRepository.searchDescriptionByKeyword(wordToFind);
-            if (matchingReport.isEmpty()){
-                logGer.info("No content found, no report matching the keyword {}", wordToFind);
+            List<Report> matchingReports;
+            if (useLinearSearch) {
+                matchingReports = reportService.linearSearchDescriptionByKeywords(keyword);
+            } else {
+                matchingReports = reportService.searchDescriptionByKeyword(keyword);
+            }
+            if (matchingReports.isEmpty()){
+                logGer.info("No content found, no report matching the keyword {}", keyword);
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
-            return ResponseEntity.ok(matchingReport);
+            return ResponseEntity.ok(matchingReports);
         } catch (Exception e) {
             logGer.error("An unexpected error occurred while retrieving reports matching the keyword.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();        

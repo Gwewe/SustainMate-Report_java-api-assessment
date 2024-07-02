@@ -61,4 +61,20 @@ public interface ReportService {
      */
     void deleteReport(Long id);
 
+    /**
+     * Will search for reports based on a simple keyword that the user would input.
+     *
+     * @param keyword The keyword to search for in the descriptions of reports.
+     * @return A list of reports that contain the keyword in their description.
+     */
+    List<Report> searchDescriptionByKeyword(String keyword);
+
+    /**
+     * Linear search for reports based on multiple keywords or sentence.
+     *
+     * @param wordToFind The string containing keywords or phrases separated by commas, dots, or spaces.
+     * @return A list of reports that match all keywords or phrases in their description.
+     */
+    List<Report> linearSearchDescriptionByKeywords(String wordToFind);
+
 }
