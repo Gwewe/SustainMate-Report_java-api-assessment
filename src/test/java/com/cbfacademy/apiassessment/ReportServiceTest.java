@@ -117,24 +117,6 @@ public class ReportServiceTest {
         assertTrue(regulationsReports.contains(report4));
     }
 
-    // @Test
-    // void testGetNonExistingReportByCategory(){
-    //     //Mock the findbycategory method to return the empty list of the corporate initiatives.
-    //     Mockito.when(mockRepository.findByCategory(Category.CORPORATE_INITIATIVES)).thenReturn(Optional.empty());
-
-    //     //When attempting to retrieve non-existing reports from a category, it will throw a NoSuchElementException.
-    //     NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-    //         service.getAllReportByCategory(Category.CORPORATE_INITIATIVES);
-    //     });
-    
-    //     // Check the exception message.
-    //     assertEquals("No reports were found in this specific category.", exception.getMessage());
-
-    //     // Verify that findByCategory was called exactly once with the specified category
-    //     verify(mockRepository, times(1)).findByCategory(Category.CORPORATE_INITIATIVES);
-    // }
-
-
 
     @Test
     void testCreateReport () {
